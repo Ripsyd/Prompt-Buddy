@@ -151,15 +151,14 @@ function injectPromptBuddyToggle() {
   toggleContainer.appendChild(toggleLabel);
   toggleContainer.appendChild(toggleSwitch);
 
-  // Neon status dot in bottom right corner
+  // Neon status dot above toggle
   const statusContainer = document.createElement('div');
   Object.assign(statusContainer.style, {
-    position: 'absolute',
-    bottom: '12px',
-    right: '12px',
     display: 'flex',
     alignItems: 'center',
-    gap: '6px'
+    justifyContent: 'center',
+    marginBottom: '12px',
+    gap: '8px'
   });
 
   const statusDot = document.createElement('div');
@@ -175,13 +174,13 @@ function injectPromptBuddyToggle() {
 
   const statusText = document.createElement('span');
   statusText.id = 'promptBuddyStatusText';
-  statusText.textContent = 'Ready';
+  statusText.textContent = 'ready';
   Object.assign(statusText.style, {
     color: '#4ade80',
-    fontSize: '10px',
+    fontSize: '11px',
     fontWeight: '500',
     textShadow: '0 0 5px #4ade80',
-    textTransform: 'capitalize'
+    textTransform: 'lowercase'
   });
 
   // Add CSS animation for neon pulse effect
@@ -233,15 +232,15 @@ function injectPromptBuddyToggle() {
       toggleContainer.style.display = 'flex';
       statusContainer.style.display = 'flex';
       panel.style.minWidth = '280px';
-      panel.style.padding = '20px 20px 40px 20px';
+      panel.style.padding = '20px';
       minimizeBtn.innerHTML = '−';
     }
   });
 
   panel.appendChild(minimizeBtn);
   panel.appendChild(header);
-  panel.appendChild(toggleContainer);
   panel.appendChild(statusContainer);
+  panel.appendChild(toggleContainer);
   document.body.appendChild(panel);
 }
 
@@ -419,25 +418,25 @@ function showBuddyStatus(msg, isError = false, timeoutMs = 4000) {
     statusDot.style.boxShadow = '0 0 10px #ef4444, 0 0 20px #ef4444, 0 0 30px #ef4444';
     statusText.style.color = '#ef4444';
     statusText.style.textShadow = '0 0 5px #ef4444';
-    statusText.textContent = msg.charAt(0).toUpperCase() + msg.slice(1).toLowerCase();
+    statusText.textContent = msg.toLowerCase();
   } else if (msg.includes('thinking') || msg.includes('engineering')) {
     statusDot.style.background = '#3b82f6';
     statusDot.style.boxShadow = '0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6';
     statusText.style.color = '#3b82f6';
     statusText.style.textShadow = '0 0 5px #3b82f6';
-    statusText.textContent = 'Working';
+    statusText.textContent = 'working';
   } else if (msg.includes('engineered') || msg.includes('✅')) {
     statusDot.style.background = '#4ade80';
     statusDot.style.boxShadow = '0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80';
     statusText.style.color = '#4ade80';
     statusText.style.textShadow = '0 0 5px #4ade80';
-    statusText.textContent = 'Complete';
+    statusText.textContent = 'complete';
   } else {
     statusDot.style.background = '#4ade80';
     statusDot.style.boxShadow = '0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80';
     statusText.style.color = '#4ade80';
     statusText.style.textShadow = '0 0 5px #4ade80';
-    statusText.textContent = 'Ready';
+    statusText.textContent = 'ready';
   }
   
   // Reset to ready state after timeout
@@ -448,7 +447,7 @@ function showBuddyStatus(msg, isError = false, timeoutMs = 4000) {
       statusDot.style.boxShadow = '0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80';
       statusText.style.color = '#4ade80';
       statusText.style.textShadow = '0 0 5px #4ade80';
-      statusText.textContent = 'Ready';
+      statusText.textContent = 'ready';
     }, timeoutMs);
   }
 }
