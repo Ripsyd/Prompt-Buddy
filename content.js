@@ -70,7 +70,7 @@ function injectPromptBuddyToggle() {
   });
 
   const toggleLabel = document.createElement('span');
-  toggleLabel.textContent = 'Enable AI Enhancement';
+  toggleLabel.textContent = 'AI Power On';
   Object.assign(toggleLabel.style, {
     color: '#fff',
     fontSize: '14px',
@@ -151,19 +151,50 @@ function injectPromptBuddyToggle() {
   toggleContainer.appendChild(toggleLabel);
   toggleContainer.appendChild(toggleSwitch);
 
-  // Status indicator
-  const statusIndicator = document.createElement('div');
-  statusIndicator.id = 'promptBuddyStatus';
-  statusIndicator.innerHTML = '⚪ Ready';
-  Object.assign(statusIndicator.style, {
-    color: '#fff',
-    fontSize: '12px',
-    textAlign: 'center',
-    background: 'rgba(255,255,255,0.1)',
-    borderRadius: '8px',
-    padding: '8px 12px',
-    marginBottom: '12px'
+  // Neon status dot above toggle
+  const statusContainer = document.createElement('div');
+  Object.assign(statusContainer.style, {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: '12px',
+    gap: '8px'
   });
+
+  const statusDot = document.createElement('div');
+  statusDot.id = 'promptBuddyStatusDot';
+  Object.assign(statusDot.style, {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    background: '#4ade80',
+    boxShadow: '0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80',
+    animation: 'pulse 2s ease-in-out infinite'
+  });
+
+  const statusText = document.createElement('span');
+  statusText.id = 'promptBuddyStatusText';
+  statusText.textContent = 'ready';
+  Object.assign(statusText.style, {
+    color: '#4ade80',
+    fontSize: '11px',
+    fontWeight: '500',
+    textShadow: '0 0 5px #4ade80',
+    textTransform: 'lowercase'
+  });
+
+  // Add CSS animation for neon pulse effect
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  statusContainer.appendChild(statusDot);
+  statusContainer.appendChild(statusText);
 
   // Minimize button
   const minimizeBtn = document.createElement('button');
@@ -192,14 +223,14 @@ function injectPromptBuddyToggle() {
     if (isMinimized) {
       header.style.display = 'none';
       toggleContainer.style.display = 'none';
-      statusIndicator.style.display = 'none';
+      statusContainer.style.display = 'none';
       panel.style.minWidth = '60px';
       panel.style.padding = '12px';
       minimizeBtn.innerHTML = '+';
     } else {
       header.style.display = 'block';
       toggleContainer.style.display = 'flex';
-      statusIndicator.style.display = 'block';
+      statusContainer.style.display = 'flex';
       panel.style.minWidth = '280px';
       panel.style.padding = '20px';
       minimizeBtn.innerHTML = '−';
@@ -208,8 +239,8 @@ function injectPromptBuddyToggle() {
 
   panel.appendChild(minimizeBtn);
   panel.appendChild(header);
+  panel.appendChild(statusContainer);
   panel.appendChild(toggleContainer);
-  panel.appendChild(statusIndicator);
   document.body.appendChild(panel);
 }
 
@@ -377,32 +408,46 @@ function addPromptBuddyButton() {
 // --- Integrated Status System --- //
 //////////////////////////////////////
 function showBuddyStatus(msg, isError = false, timeoutMs = 4000) {
-  const statusIndicator = document.getElementById('promptBuddyStatus');
-  if (!statusIndicator) return;
+  const statusDot = document.getElementById('promptBuddyStatusDot');
+  const statusText = document.getElementById('promptBuddyStatusText');
+  if (!statusDot || !statusText) return;
   
-  // Update the panel status
-  statusIndicator.innerHTML = msg;
-  
+  // Update the neon dot and text based on status
   if (isError) {
-    statusIndicator.style.background = 'rgba(239, 68, 68, 0.8)';
-    statusIndicator.innerHTML = '❌ ' + msg;
+    statusDot.style.background = '#ef4444';
+    statusDot.style.boxShadow = '0 0 10px #ef4444, 0 0 20px #ef4444, 0 0 30px #ef4444';
+    statusText.style.color = '#ef4444';
+    statusText.style.textShadow = '0 0 5px #ef4444';
+    statusText.textContent = msg.toLowerCase();
   } else if (msg.includes('thinking') || msg.includes('engineering')) {
-    statusIndicator.style.background = 'rgba(59, 130, 246, 0.8)';
-    statusIndicator.innerHTML = '🔄 ' + msg;
+    statusDot.style.background = '#3b82f6';
+    statusDot.style.boxShadow = '0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6';
+    statusText.style.color = '#3b82f6';
+    statusText.style.textShadow = '0 0 5px #3b82f6';
+    statusText.textContent = 'working';
   } else if (msg.includes('engineered') || msg.includes('✅')) {
-    statusIndicator.style.background = 'rgba(34, 197, 94, 0.8)';
-    statusIndicator.innerHTML = '✅ ' + msg.replace('✅ ', '');
+    statusDot.style.background = '#4ade80';
+    statusDot.style.boxShadow = '0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80';
+    statusText.style.color = '#4ade80';
+    statusText.style.textShadow = '0 0 5px #4ade80';
+    statusText.textContent = 'complete';
   } else {
-    statusIndicator.style.background = 'rgba(255,255,255,0.1)';
-    statusIndicator.innerHTML = '⚪ ' + msg;
+    statusDot.style.background = '#4ade80';
+    statusDot.style.boxShadow = '0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80';
+    statusText.style.color = '#4ade80';
+    statusText.style.textShadow = '0 0 5px #4ade80';
+    statusText.textContent = 'ready';
   }
   
   // Reset to ready state after timeout
   if (timeoutMs > 0) {
-    clearTimeout(statusIndicator._resetTimeout);
-    statusIndicator._resetTimeout = setTimeout(() => {
-      statusIndicator.innerHTML = '⚪ Ready';
-      statusIndicator.style.background = 'rgba(255,255,255,0.1)';
+    clearTimeout(statusDot._resetTimeout);
+    statusDot._resetTimeout = setTimeout(() => {
+      statusDot.style.background = '#4ade80';
+      statusDot.style.boxShadow = '0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80';
+      statusText.style.color = '#4ade80';
+      statusText.style.textShadow = '0 0 5px #4ade80';
+      statusText.textContent = 'ready';
     }, timeoutMs);
   }
 }
