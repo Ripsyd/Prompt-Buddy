@@ -1,0 +1,18 @@
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brain-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lightning-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ade80;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22c55e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Brain shape -->
+  <path d="M8 2 C10 2, 12 4, 12 6 C12 7, 11.5 8, 10.5 8.5 C11 9, 11.5 10, 11.5 11 C11.5 13, 10 14, 8 14 C6 14, 4.5 13, 4.5 11 C4.5 10, 5 9, 5.5 8.5 C4.5 8, 4 7, 4 6 C4 4, 6 2, 8 2 Z" fill="url(#brain-gradient)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+  
+  <!-- Lightning bolt -->
+  <path d="M7 5 L9 5 L7.5 8 L8.5 8 L6.5 11 L7.5 8 L7 8 Z" fill="url(#lightning-gradient)" stroke="white" stroke-width="0.2"/>
+</svg>

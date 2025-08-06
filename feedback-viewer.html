@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Viewer - Development Tool</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .feedback-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: #f9fafb;
+        }
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .feedback-content {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 8px;
+        }
+        .feedback-meta {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        .no-feedback {
+            text-align: center;
+            color: #6b7280;
+            padding: 40px;
+        }
+        .clear-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .clear-btn:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Feedback Viewer (Development Tool)</h1>
+        <p>This tool helps you view user feedback stored in the extension. Use this during development to see what users are reporting.</p>
+        
+        <button id="clearFeedback" class="clear-btn">🗑️ Clear All Feedback</button>
+        
+        <div id="feedbackList">
+            <div class="no-feedback">Loading feedback...</div>
+        </div>
+    </div>
+
+    <script>
+        // Simple encryption helper (copy from popup.js)
+        const CryptoHelper = {
+            getKey: async function() {
+                const keyMaterial = await crypto.subtle.importKey(
+                    'raw',
+                    new TextEncoder().encode('promptbuddy-' + navigator.userAgent.slice(0, 20)),
+                    'PBKDF2',
+                    false,
+                    ['deriveKey']
+                );
+                
+                return crypto.subtle.deriveKey(
+                    {
+                        name: 'PBKDF2',
+                        salt: new TextEncoder().encode('promptbuddy-salt'),
+                        iterations: 100000,
+                        hash: 'SHA-256',
+                    },
+                    keyMaterial,
+                    { name: 'AES-GCM', length: 256 },
+                    false,
+                    ['decrypt']
+                );
+            },
+
+            decrypt: async function(encryptedData) {
+                try {
+                    const key = await this.getKey();
+                    const combined = new Uint8Array(atob(encryptedData).split('').map(c => c.charCodeAt(0)));
+                    
+                    const iv = combined.slice(0, 12);
+                    const encrypted = combined.slice(12);
+                    
+                    const decrypted = await crypto.subtle.decrypt(
+                        { name: 'AES-GCM', iv: iv },
+                        key,
+                        encrypted
+                    );
+                    
+                    return new TextDecoder().decode(decrypted);
+                } catch (error) {
+                    return encryptedData;
+                }
+            }
+        };
+
+        // Load and display feedback
+        async function loadFeedback() {
+            const feedbackList = document.getElementById('feedbackList');
+            
+            chrome.storage.sync.get(['userFeedback'], async function(result) {
+                if (!result.userFeedback) {
+                    feedbackList.innerHTML = '<div class="no-feedback">No feedback found.</div>';
+                    return;
+                }
+
+                try {
+                    const decryptedArray = await CryptoHelper.decrypt(result.userFeedback);
+                    const feedbackArray = JSON.parse(decryptedArray) || [];
+
+                    if (feedbackArray.length === 0) {
+                        feedbackList.innerHTML = '<div class="no-feedback">No feedback found.</div>';
+                        return;
+                    }
+
+                    // Sort by timestamp (newest first)
+                    feedbackArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                    feedbackList.innerHTML = feedbackArray.map(item => `
+                        <div class="feedback-item">
+                            <div class="feedback-header">
+                                <span>ID: ${item.id}</span>
+                                <span>${new Date(item.timestamp).toLocaleString()}</span>
+                            </div>
+                            <div class="feedback-content">
+                                ${item.feedback.replace(/\n/g, '<br>')}
+                            </div>
+                            <div class="feedback-meta">
+                                Version: ${item.version} | 
+                                Browser: ${item.userAgent} | 
+                                Submitted: ${item.submitted ? 'Yes' : 'No'}
+                            </div>
+                        </div>
+                    `).join('');
+
+                } catch (error) {
+                    feedbackList.innerHTML = '<div class="no-feedback">Error loading feedback: ' + error.message + '</div>';
+                }
+            });
+        }
+
+        // Clear all feedback
+        document.getElementById('clearFeedback').addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear all feedback? This cannot be undone.')) {
+                chrome.storage.sync.remove('userFeedback', function() {
+                    alert('All feedback cleared!');
+                    loadFeedback();
+                });
+            }
+        });
+
+        // Load feedback on page load
+        document.addEventListener('DOMContentLoaded', loadFeedback);
+    </script>
+</body>
+</html>

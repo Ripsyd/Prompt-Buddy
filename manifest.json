@@ -2,31 +2,62 @@
   "manifest_version": 3,
   "name": "Prompt Buddy",
   "version": "1.0.1",
-  "description": "Intercepts prompts on ChatGPT and Cursor, auto-engineers them using your API.",
+  "description": "Auto-engineer ChatGPT prompts with AI intelligence. One toggle, instant optimization.",
+  "author": "Prompt Buddy Team",
+  "homepage_url": "https://github.com/promptbuddy/extension",
+  
   "content_scripts": [
     {
       "matches": [
         "https://chat.openai.com/*",
-        "https://chatgpt.com/*",
-        "https://www.cursor.so/*",
-        "https://www.cursor.dev/*"
+        "https://chatgpt.com/*"
       ],
       "js": ["content.js"],
-      "run_at": "document_idle"
+      "run_at": "document_idle",
+      "all_frames": false
     }
   ],
+  
+  "icons": {
+    "16": "inactivelogo.png",
+    "48": "inactivelogo.png",
+    "128": "inactivelogo.png"
+  },
+  
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Configure Prompt Buddy"
+    "default_icon": {
+      "16": "inactivelogo.png",
+      "48": "inactivelogo.png",
+      "128": "inactivelogo.png"
+    },
+    "default_title": "Prompt Buddy Settings"
   },
-  "host_permissions": [
-    "https://api.openai.com/*"
-  ],
-  "permissions": [
-    "storage",
-    "scripting"
-  ],
+  
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  
+  "permissions": [
+    "storage"
+  ],
+  
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "https://*.openai.com/*"
+  ],
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["icon-*.svg"],
+      "matches": ["https://chat.openai.com/*", "https://chatgpt.com/*"]
+    }
+  ],
+  
+  "minimum_chrome_version": "88",
+  
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline';"
   }
 }
