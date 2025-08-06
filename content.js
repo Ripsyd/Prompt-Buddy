@@ -31,9 +31,8 @@ function injectPromptBuddyToggle() {
   panel.id = 'promptBuddyPanel';
   Object.assign(panel.style, {
     position: 'fixed',
-    top: '50%',
+    bottom: '20px',
     right: '20px',
-    transform: 'translateY(-50%)',
     zIndex: '10000',
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     borderRadius: '16px',
