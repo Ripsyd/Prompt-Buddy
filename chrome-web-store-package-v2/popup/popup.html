@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Buddy Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      width: 350px;
+      min-height: 400px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      margin: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 2px;
+    }
+
+    .header p {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      background: #fff;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+    }
+
+    input::placeholder {
+      color: #9ca3af;
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 4px;
+      font-family: inherit;
+    }
+
+    .save-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .save-btn:active {
+      transform: translateY(0);
+    }
+
+    .msg {
+      margin-top: 12px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.3s ease;
+      min-height: 20px;
+    }
+
+    .help-text {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .icon {
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+      margin: 16px 0;
+    }
+
+    .feedback-section {
+      margin-top: 12px;
+    }
+
+    .feedback-btn {
+      width: 100%;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      opacity: 0.9;
+    }
+
+    .feedback-btn:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .feedback-btn:active {
+      transform: translateY(0);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .footer p {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* Feedback Modal Styles */
+    .feedback-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .feedback-modal.show {
+      display: flex;
+    }
+
+    .feedback-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 24px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .feedback-content h3 {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+      color: #1f2937;
+    }
+
+    .feedback-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+      margin-bottom: 16px;
+    }
+
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .feedback-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .feedback-cancel {
+      padding: 8px 16px;
+      background: #f3f4f6;
+      border: none;
+      border-radius: 6px;
+      color: #6b7280;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .feedback-cancel:hover {
+      background: #e5e7eb;
+    }
+
+    .feedback-submit {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .feedback-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Toggle Switch Styles */
+    .toggle-section {
+      margin-bottom: 20px;
+      padding: 16px;
+      background: rgba(74, 222, 128, 0.05);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      border-radius: 12px;
+    }
+
+    .toggle-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      min-height: 24px;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e5e7eb;
+      transition: 0.3s;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .toggle-input:checked + .toggle-slider {
+      background-color: #4ade80;
+    }
+
+    .toggle-input:checked + .toggle-slider:before {
+      transform: translateX(26px) translateY(-50%);
+    }
+
+    .toggle-status {
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .status-text {
+      font-weight: 600;
+    }
+
+    .status-text.active {
+      color: #059669;
+    }
+
+    .status-text.inactive {
+      color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🤖 Prompt Buddy</h1>
+      <p>Configure your AI settings</p>
+    </div>
+
+    <!-- Extension Toggle Switch -->
+    <div class="toggle-section">
+      <div class="toggle-container">
+        <div class="toggle-label">
+          <span class="icon">⚡</span>Enable Extension
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" id="extensionToggle" class="toggle-input">
+          <label for="extensionToggle" class="toggle-slider"></label>
+        </div>
+      </div>
+      <div class="toggle-status" id="toggleStatus">
+        Extension is <span class="status-text">inactive</span>
+      </div>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label for="apiEndpoint">
+          <span class="icon">🔗</span>API Endpoint
+        </label>
+        <input 
+          type="text" 
+          id="apiEndpoint" 
+          placeholder="https://api.openai.com/v1/chat/completions"
+          autocomplete="off"
+        />
+        <div class="help-text">
+          Your OpenAI API endpoint URL
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="apiKey">
+          <span class="icon">🔑</span>API Key
+        </label>
+        <input 
+          type="password" 
+          id="apiKey" 
+          placeholder="sk-..."
+          autocomplete="off"
+        />
+        <div class="help-text">
+          Your OpenAI API key (kept secure locally)
+        </div>
+      </div>
+
+      <button type="button" id="saveBtn" class="save-btn">
+        💾 Save Settings
+      </button>
+    </form>
+
+  <div id="msg" class="msg"></div>
+
+    <div class="divider"></div>
+
+    <div class="feedback-section">
+      <button type="button" id="feedbackBtn" class="feedback-btn">
+        💬 Send Feedback
+      </button>
+    </div>
+
+            <div class="footer">
+            <p>Settings are encrypted and saved locally</p>
+        </div>
+  </div>
+
+  <!-- Feedback Modal -->
+  <div id="feedbackModal" class="feedback-modal">
+    <div class="feedback-content">
+      <h3>💬 Send Feedback</h3>
+      <textarea 
+        id="feedbackText" 
+        class="feedback-textarea" 
+        placeholder="Share your thoughts, suggestions, or report issues. Your feedback helps us improve Prompt Buddy!"
+        maxlength="1000"
+      ></textarea>
+      <div class="feedback-actions">
+        <button type="button" id="feedbackCancel" class="feedback-cancel">
+          Cancel
+        </button>
+        <button type="button" id="feedbackSubmit" class="feedback-submit">
+          📤 Send Feedback
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
