@@ -272,9 +272,13 @@ function injectPromptBuddyToggle() {
     if (isEnabled) {
       slider.style.background = CONFIG.COLORS.primary;
       sliderButton.style.transform = 'translateX(26px)';
+      // Show the panel
+      panel.style.display = 'block';
     } else {
       slider.style.background = 'rgba(255,255,255,0.3)';
       sliderButton.style.transform = 'translateX(0px)';
+      // Hide the panel  
+      panel.style.display = 'none';
     }
   }
 
@@ -325,6 +329,8 @@ function injectPromptBuddyToggle() {
     const isEnabled = result.promptBuddyEnabled || false;
     toggle.checked = isEnabled;
     updateToggleState(isEnabled);
+    
+    // updateToggleState already handles panel visibility, so no need to set it again
     
     // Ensure icon reflects current state on page load
     try {
