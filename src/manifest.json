@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Prompt Buddy",
-  "version": "1.0.1",
-  "description": "Auto-engineer ChatGPT prompts with AI intelligence. One toggle, instant optimization.",
+  "version": "1.0.2",
+  "description": "Automatically create engineer-grade ChatGPT prompts with AI. One click for intelligent optimization.",
   "author": "Prompt Buddy Team",
   "homepage_url": "https://github.com/promptbuddy/extension",
   
