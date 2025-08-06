@@ -93,13 +93,13 @@ async function updateExtensionIcon(isActive) {
   try {
     // Use the custom logos for active/inactive states
     const iconPaths = isActive ? {
-      "16": "activelogo.png",
-      "48": "activelogo.png", 
-      "128": "activelogo.png"
+      "16": "icons/activelogo.png",
+      "48": "icons/activelogo.png", 
+      "128": "icons/activelogo.png"
     } : {
-      "16": "inactivelogo.png",
-      "48": "inactivelogo.png",
-      "128": "inactivelogo.png"
+      "16": "icons/inactivelogo.png",
+      "48": "icons/inactivelogo.png",
+      "128": "icons/inactivelogo.png"
     };
     
     await chrome.action.setIcon({

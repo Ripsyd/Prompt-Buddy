@@ -12,30 +12,30 @@
         "https://chat.openai.com/*",
         "https://chatgpt.com/*"
       ],
-      "js": ["content.js"],
+      "js": ["src/content.js"],
       "run_at": "document_idle",
       "all_frames": false
     }
   ],
   
   "icons": {
-    "16": "activelogo.png",
-    "48": "activelogo.png",
-    "128": "activelogo.png"
+    "16": "icons/activelogo.png",
+    "48": "icons/activelogo.png",
+    "128": "icons/activelogo.png"
   },
   
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup/popup.html",
     "default_icon": {
-      "16": "activelogo.png",
-      "48": "activelogo.png",
-      "128": "activelogo.png"
+      "16": "icons/activelogo.png",
+      "48": "icons/activelogo.png",
+      "128": "icons/activelogo.png"
     },
     "default_title": "Prompt Buddy Settings"
   },
   
   "background": {
-    "service_worker": "background.js",
+    "service_worker": "src/background.js",
     "type": "module"
   },
   
@@ -50,7 +50,7 @@
   
   "web_accessible_resources": [
     {
-      "resources": ["icon-*.svg"],
+      "resources": ["icons/icon-*.svg"],
       "matches": ["https://chat.openai.com/*", "https://chatgpt.com/*"]
     }
   ],
