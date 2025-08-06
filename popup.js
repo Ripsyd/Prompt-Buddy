@@ -59,6 +59,16 @@ const CryptoHelper = {
 
   decrypt: async function(encryptedData) {
     try {
+      // If data is not encrypted (backward compatibility), return as-is
+      if (!encryptedData || typeof encryptedData !== 'string') {
+        return encryptedData;
+      }
+      
+      // Check if data looks like it might be encrypted (base64 format)
+      if (!/^[A-Za-z0-9+/]*={0,2}$/.test(encryptedData)) {
+        return encryptedData; // Not base64, return as plain text
+      }
+      
       const key = await this.getKey();
       const combined = new Uint8Array(atob(encryptedData).split('').map(c => c.charCodeAt(0)));
       
@@ -122,6 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const endpointInput = document.getElementById('apiEndpoint');
   const apiKeyInput = document.getElementById('apiKey');
   const saveBtn = document.getElementById('saveBtn');
+  const extensionToggle = document.getElementById('extensionToggle');
+  const toggleStatus = document.getElementById('toggleStatus');
+  const statusText = toggleStatus.querySelector('.status-text');
 
   // Feedback elements
   const feedbackBtn = document.getElementById('feedbackBtn');
@@ -130,8 +143,23 @@ document.addEventListener('DOMContentLoaded', function() {
   const feedbackCancel = document.getElementById('feedbackCancel');
   const feedbackSubmit = document.getElementById('feedbackSubmit');
 
+  /**
+   * Update toggle status display
+   * @param {boolean} isEnabled - Whether the extension is enabled
+   */
+  function updateToggleStatus(isEnabled) {
+    if (isEnabled) {
+      statusText.textContent = 'active';
+      statusText.className = 'status-text active';
+    } else {
+      statusText.textContent = 'inactive';
+      statusText.className = 'status-text inactive';
+    }
+  }
+
   // Load existing values with decryption
-  chrome.storage.sync.get(['apiEndpoint', 'apiKey'], async function(result) {
+  try {
+    chrome.storage.sync.get(['apiEndpoint', 'apiKey', 'promptBuddyEnabled'], async function(result) {
     if (result.apiEndpoint) {
       // Try to decrypt, fallback to plain text for backward compatibility
       const decryptedEndpoint = await CryptoHelper.decrypt(result.apiEndpoint);
@@ -146,7 +174,15 @@ document.addEventListener('DOMContentLoaded', function() {
       const decryptedKey = await CryptoHelper.decrypt(result.apiKey);
       apiKeyInput.value = decryptedKey;
     }
+
+    // Load extension toggle state
+    const isEnabled = result.promptBuddyEnabled || false;
+    extensionToggle.checked = isEnabled;
+    updateToggleStatus(isEnabled);
   });
+  } catch (error) {
+    console.warn('Failed to load settings:', error.message || error);
+  }
 
   // Save settings with validation and encryption
   saveBtn.onclick = async function() {
@@ -202,6 +238,40 @@ document.addEventListener('DOMContentLoaded', function() {
         saveBtn.click();
       }
     });
+  });
+
+  // Extension toggle functionality
+  extensionToggle.addEventListener('change', function() {
+    const isEnabled = extensionToggle.checked;
+    
+    // Save toggle state
+    try {
+      chrome.storage.sync.set({ promptBuddyEnabled: isEnabled }, function() {
+      if (chrome.runtime.lastError) {
+        console.error('Failed to save toggle state:', chrome.runtime.lastError);
+        // Revert toggle if save failed
+        extensionToggle.checked = !isEnabled;
+        updateToggleStatus(!isEnabled);
+      } else {
+        updateToggleStatus(isEnabled);
+        
+        // Update extension icon
+        try {
+          chrome.runtime.sendMessage({
+            action: 'updateIcon',
+            isActive: isEnabled
+          });
+        } catch (error) {
+          console.warn('Failed to send icon update message:', error.message || error);
+        }
+      }
+    });
+    } catch (error) {
+      console.error('Failed to save toggle state:', error.message || error);
+      // Revert toggle if save failed
+      extensionToggle.checked = !isEnabled;
+      updateToggleStatus(!isEnabled);
+    }
   });
 
   // Feedback functionality
