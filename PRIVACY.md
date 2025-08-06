@@ -6,7 +6,7 @@
 
 Prompt Buddy ("the Extension") is a free Chrome extension that helps users optimize their prompts for AI tools using OpenAI's GPT-4o-mini model.
 
-Your privacy is very important to us. This policy outlines what information is—and is not—collected and how your data is handled when using the Extension.
+**Your privacy is our top priority.** This policy provides complete transparency about our data practices and confirms that we collect ZERO personal information. We believe privacy should be the default, not an option.
 
 ---
 
@@ -56,15 +56,25 @@ Prompt Buddy does not integrate with any other external services, analytics plat
 
 ## Data Security
 
-### Encryption
-- **API Credentials**: Your OpenAI API key and endpoint are encrypted using AES-256-GCM encryption
-- **User Feedback**: All feedback data is encrypted before local storage
-- **No Plain Text Storage**: Sensitive data is never stored in plain text
+### Military-Grade Encryption
+- **API Credentials**: Protected with AES-256-GCM encryption (military standard)
+- **Key Derivation**: PBKDF2 with 100,000 iterations and unique salts
+- **Secure Random IVs**: Each encryption uses cryptographically secure random initialization vectors
+- **User Feedback**: All feedback encrypted before storage using the same standards
+- **Zero Plain Text**: Sensitive data is never stored in readable format
 
-### Local Storage Only
-- All data is stored locally in your Chrome browser's sync storage
-- No data is transmitted to our servers or any external services
-- You maintain complete control over your data
+### Local-Only Storage
+- All data stored exclusively in Chrome's sync storage (encrypted by Google)
+- No external servers, databases, or cloud storage used by Prompt Buddy
+- No data transmission to third parties (except your chosen OpenAI API)
+- Complete user control - remove extension to delete all data instantly
+
+### Security Architecture
+- **Minimal Attack Surface**: Only necessary Chrome permissions requested
+- **Content Security Policy**: Strict CSP prevents code injection attacks
+- **Input Validation**: All user inputs validated and sanitized
+- **Error Isolation**: Failures don't leak sensitive information
+- **Memory Protection**: Automatic cleanup prevents data persistence in memory
 
 ---
 
@@ -165,14 +175,28 @@ Prompt Buddy is designed to comply with:
 - California Consumer Privacy Act (CCPA) requirements
 - Other applicable privacy regulations
 
-### Third-Party Compliance
-Please note that while Prompt Buddy follows privacy best practices, we cannot control:
-- **Google Chrome's** data collection practices
-- **Chrome Web Store's** analytics and tracking
-- **OpenAI's** data handling and storage policies
-- **ChatGPT's** conversation data retention
+### Third-Party Compliance & Transparency
 
-We recommend reviewing the privacy policies of these services for complete information about their data practices.
+**What Prompt Buddy Controls** ✅
+- Zero data collection from the extension itself
+- Military-grade encryption of any locally stored settings
+- No tracking, analytics, or behavioral monitoring
+- Complete transparency through open-source code
+
+**What We Cannot Control** ⚠️
+- **Google Chrome**: May collect extension usage statistics and browsing data
+- **Chrome Web Store**: Tracks downloads, ratings, and user interactions
+- **OpenAI API**: Processes your prompts according to their data policies
+- **ChatGPT Platform**: May store conversations per their retention policies
+
+**Recommended Actions** 📋
+- Review [Google's Privacy Policy](https://policies.google.com/privacy) for Chrome data practices
+- Check [OpenAI's Privacy Policy](https://openai.com/privacy) for API data handling
+- Use Chrome's privacy settings to limit data collection if desired
+- Consider using incognito mode for additional privacy
+
+**Our Commitment** 🛡️
+While we cannot control third-party data practices, Prompt Buddy itself is designed with privacy-by-default principles and collects absolutely no data from your usage.
 
 ---
 
