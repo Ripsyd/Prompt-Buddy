@@ -264,6 +264,101 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     }
+
+    /* Toggle Switch Styles */
+    .toggle-section {
+      margin-bottom: 20px;
+      padding: 16px;
+      background: rgba(74, 222, 128, 0.05);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      border-radius: 12px;
+    }
+
+    .toggle-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      min-height: 24px;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e5e7eb;
+      transition: 0.3s;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .toggle-input:checked + .toggle-slider {
+      background-color: #4ade80;
+    }
+
+    .toggle-input:checked + .toggle-slider:before {
+      transform: translateX(26px) translateY(-50%);
+    }
+
+    .toggle-status {
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .status-text {
+      font-weight: 600;
+    }
+
+    .status-text.active {
+      color: #059669;
+    }
+
+    .status-text.inactive {
+      color: #dc2626;
+    }
   </style>
 </head>
 <body>
@@ -271,6 +366,22 @@
     <div class="header">
       <h1>🤖 Prompt Buddy</h1>
       <p>Configure your AI settings</p>
+    </div>
+
+    <!-- Extension Toggle Switch -->
+    <div class="toggle-section">
+      <div class="toggle-container">
+        <div class="toggle-label">
+          <span class="icon">⚡</span>Enable Extension
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" id="extensionToggle" class="toggle-input">
+          <label for="extensionToggle" class="toggle-slider"></label>
+        </div>
+      </div>
+      <div class="toggle-status" id="toggleStatus">
+        Extension is <span class="status-text">inactive</span>
+      </div>
     </div>
 
     <form>
@@ -309,7 +420,7 @@
       </button>
     </form>
 
-    <div id="msg" class="msg"></div>
+  <div id="msg" class="msg"></div>
 
     <div class="divider"></div>
 

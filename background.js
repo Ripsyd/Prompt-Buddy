@@ -135,13 +135,27 @@ function handleStateChange(request) {
   }
 }
 
-// Initialize extension with inactive state on startup
-chrome.runtime.onStartup.addListener(() => {
-  updateExtensionIcon(false);
+// Initialize extension with proper state on startup
+chrome.runtime.onStartup.addListener(async () => {
+  try {
+    const result = await chrome.storage.sync.get(['promptBuddyEnabled']);
+    const isActive = result.promptBuddyEnabled || false;
+    updateExtensionIcon(isActive);
+  } catch (error) {
+    console.warn('Failed to get initial state, defaulting to inactive:', error);
+    updateExtensionIcon(false);
+  }
 });
 
-chrome.runtime.onInstalled.addListener(() => {
-  updateExtensionIcon(false);
+chrome.runtime.onInstalled.addListener(async () => {
+  try {
+    const result = await chrome.storage.sync.get(['promptBuddyEnabled']);
+    const isActive = result.promptBuddyEnabled || false;
+    updateExtensionIcon(isActive);
+  } catch (error) {
+    console.warn('Failed to get initial state, defaulting to inactive:', error);
+    updateExtensionIcon(false);
+  }
 });
 
 // Listen for storage changes to update icon state

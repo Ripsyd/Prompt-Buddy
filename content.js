@@ -305,13 +305,33 @@ function injectPromptBuddyToggle() {
     if (isEnabled) {
       slider.style.background = CONFIG.COLORS.primary;
       sliderButton.style.transform = 'translateX(26px)';
-      // Show the panel
+      // Show the panel and enable functionality
       panel.style.display = 'block';
+      panel.style.opacity = '1';
+      panel.style.pointerEvents = 'auto';
+      
+      // Enable the Engineer Prompt button if it exists
+      const engineerBtn = document.getElementById('promptBuddyActionBtn');
+      if (engineerBtn) {
+        engineerBtn.style.opacity = '1';
+        engineerBtn.style.pointerEvents = 'auto';
+        engineerBtn.disabled = false;
+      }
     } else {
       slider.style.background = 'rgba(255,255,255,0.3)';
       sliderButton.style.transform = 'translateX(0px)';
-      // Hide the panel  
+      // Hide the panel and disable all functionality
       panel.style.display = 'none';
+      panel.style.opacity = '0';
+      panel.style.pointerEvents = 'none';
+      
+      // Disable the Engineer Prompt button if it exists
+      const engineerBtn = document.getElementById('promptBuddyActionBtn');
+      if (engineerBtn) {
+        engineerBtn.style.opacity = '0.5';
+        engineerBtn.style.pointerEvents = 'none';
+        engineerBtn.disabled = true;
+      }
     }
   }
 
@@ -564,9 +584,28 @@ function addPromptBuddyButton() {
    * Handle the Engineer Prompt button click
    */
   async function handleEngineerPromptClick() {
+    // Double-check toggle state from both DOM and storage for maximum safety
     const toggle = document.getElementById('promptBuddyToggle');
     if (!toggle || !toggle.checked) {
       showBuddyStatus("⚠️ Turn ON Prompt Buddy toggle first!", true, 3000);
+      return;
+    }
+    
+    // Additional safety check from storage
+    try {
+      if (chrome && chrome.storage && chrome.storage.sync) {
+        const result = await new Promise(resolve => {
+          chrome.storage.sync.get(['promptBuddyEnabled'], resolve);
+        });
+        
+        if (!result.promptBuddyEnabled) {
+          showBuddyStatus("⚠️ Extension is disabled. Enable it first!", true, 3000);
+          return;
+        }
+      }
+    } catch (error) {
+      if (DEBUG_MODE) console.warn('Prompt Buddy: Failed to verify extension state:', error);
+      showBuddyStatus("⚠️ Cannot verify extension state. Please try again.", true, 3000);
       return;
     }
     
@@ -719,6 +758,22 @@ function addPromptBuddyButton() {
 
   // Assign the click handler
   btn.onclick = handleEngineerPromptClick;
+
+  // Check initial toggle state and set button accordingly
+  try {
+    if (chrome && chrome.storage && chrome.storage.sync) {
+      chrome.storage.sync.get(['promptBuddyEnabled'], function(result) {
+        const isEnabled = result.promptBuddyEnabled || false;
+        if (!isEnabled) {
+          btn.style.opacity = '0.5';
+          btn.style.pointerEvents = 'none';
+          btn.disabled = true;
+        }
+      });
+    }
+  } catch (error) {
+    if (DEBUG_MODE) console.warn('Prompt Buddy: Failed to check initial button state:', error);
+  }
 
   panel.appendChild(btn);
   

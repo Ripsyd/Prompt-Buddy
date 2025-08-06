@@ -19,17 +19,17 @@
   ],
   
   "icons": {
-    "16": "inactivelogo.png",
-    "48": "inactivelogo.png",
-    "128": "inactivelogo.png"
+    "16": "activelogo.png",
+    "48": "activelogo.png",
+    "128": "activelogo.png"
   },
   
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "inactivelogo.png",
-      "48": "inactivelogo.png",
-      "128": "inactivelogo.png"
+      "16": "activelogo.png",
+      "48": "activelogo.png",
+      "128": "activelogo.png"
     },
     "default_title": "Prompt Buddy Settings"
   },
