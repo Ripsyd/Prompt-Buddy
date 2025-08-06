@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Prompt Buddy",
+  "version": "1.0.1",
+  "description": "Intercepts prompts on ChatGPT and Cursor, auto-engineers them using your API.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*",
+        "https://www.cursor.so/*",
+        "https://www.cursor.dev/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Configure Prompt Buddy"
+  },
+  "host_permissions": [
+    "https://api.openai.com/*"
+  ],
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
