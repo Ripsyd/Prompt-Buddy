@@ -29,6 +29,39 @@ let API_KEY = "";
 // Speed optimization: Simple cache for similar prompts
 const promptCache = new Map();
 
+// Timeout tracking for cleanup
+window.promptBuddyTimeouts = window.promptBuddyTimeouts || new Set();
+
+/**
+ * Clear cache and cleanup when page unloads
+ */
+function handlePageUnload() {
+  try {
+    if (DEBUG_MODE) console.log('Prompt Buddy: Clearing cache on page unload');
+    promptCache.clear();
+    
+    // Clear any pending timeouts
+    if (window.promptBuddyTimeouts) {
+      window.promptBuddyTimeouts.forEach(clearTimeout);
+      window.promptBuddyTimeouts.clear();
+    }
+  } catch (error) {
+    if (DEBUG_MODE) console.warn('Prompt Buddy: Error during cleanup:', error);
+  }
+}
+
+/**
+ * Clear cache when extension is disabled
+ */
+function clearCacheOnDisable() {
+  try {
+    if (DEBUG_MODE) console.log('Prompt Buddy: Clearing cache - extension disabled');
+    promptCache.clear();
+  } catch (error) {
+    if (DEBUG_MODE) console.warn('Prompt Buddy: Error clearing cache:', error);
+  }
+}
+
 
 /**
  * Simple decryption helper for content script
@@ -294,6 +327,12 @@ function injectPromptBuddyToggle() {
     } catch (error) {
       if (DEBUG_MODE) console.warn('Prompt Buddy: Failed to save toggle state:', error);
     }
+    
+    // Clear cache when extension is disabled for fresh start
+    if (!isEnabled) {
+      clearCacheOnDisable();
+    }
+    
     updateToggleState(isEnabled);
     
     // Update extension icon based on state
@@ -440,6 +479,16 @@ function injectPromptBuddyToggle() {
 
   // Handle responsive panel sizing
   window.addEventListener('resize', handlePanelResize);
+  
+  // Add cleanup event listeners
+  window.addEventListener('beforeunload', handlePageUnload);
+  window.addEventListener('unload', handlePageUnload);
+  document.addEventListener('visibilitychange', function handleVisibilityChange() {
+    if (document.hidden) {
+      // Page is hidden, clear cache to prevent stale data
+      handlePageUnload();
+    }
+  });
   
   } catch (error) {
     if (DEBUG_MODE) console.warn('Prompt Buddy: Failed to inject panel:', error);
@@ -594,6 +643,9 @@ function addPromptBuddyButton() {
         input.innerText = raw;
         showBuddyStatus("⚠️ Request timeout. Try again.", true, 3000);
       }, CONFIG.REQUEST_TIMEOUT);
+      
+      // Track timeout for cleanup
+      window.promptBuddyTimeouts.add(timeoutId);
 
       chrome.runtime.sendMessage(
         {
@@ -614,6 +666,7 @@ function addPromptBuddyButton() {
             }
           }
           clearTimeout(timeoutId); // Clear timeout on response
+          window.promptBuddyTimeouts.delete(timeoutId); // Remove from tracking
           
           input.setAttribute('contenteditable', 'true');
           
@@ -711,6 +764,10 @@ function showBuddyStatus(msg, isError = false, timeoutMs = 4000) {
   // Auto-reset to ready state
   if (timeoutMs > 0) {
     clearTimeout(statusDot._resetTimeout);
+    if (statusDot._resetTimeout) {
+      window.promptBuddyTimeouts.delete(statusDot._resetTimeout);
+    }
+    
     statusDot._resetTimeout = setTimeout(() => {
       const readyColor = CONFIG.COLORS.primary;
       statusDot.style.background = readyColor;
@@ -718,7 +775,11 @@ function showBuddyStatus(msg, isError = false, timeoutMs = 4000) {
       statusText.style.color = readyColor;
       statusText.style.textShadow = `0 0 5px ${readyColor}`;
       statusText.textContent = 'ready';
+      window.promptBuddyTimeouts.delete(statusDot._resetTimeout);
     }, timeoutMs);
+    
+    // Track timeout for cleanup
+    window.promptBuddyTimeouts.add(statusDot._resetTimeout);
   }
 }
 
