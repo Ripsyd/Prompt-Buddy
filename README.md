@@ -58,9 +58,9 @@
 ## 🚀 Quick Start
 
 ### **Option 1: Chrome Web Store (Recommended)**
-[![Add to Chrome](https://img.shields.io/badge/Add%20to-Chrome-blue.svg?style=for-the-badge&logo=google-chrome)](https://chrome.google.com/webstore/detail/prompt-buddy/STORE_ID_HERE)
+[![Add to Chrome](https://img.shields.io/badge/Add%20to-Chrome-blue.svg?style=for-the-badge&logo=google-chrome)](https://chrome.google.com/webstore)
 
-*Coming Soon - Currently in review*
+*🚀 Coming Soon - Currently in Chrome Web Store review process*
 
 ### **Option 2: Install Locally (Developer)**
 
@@ -93,7 +93,7 @@
 ## ✨ What It Does
 
 Transform your ChatGPT experience with intelligent prompt engineering:
-- **🧠 AI-Powered Optimization**: GPT-4o-mini improves your prompts
+- **🧠 AI-Powered Optimization**: GPT-4o in optimized mode improves your prompts
 - **⚡ Lightning Speed**: 2-3 second responses with smart caching
 - **🔐 Military-Grade Security**: AES-256-GCM encryption
 - **🛡️ Privacy-First**: Zero data collection
@@ -112,7 +112,7 @@ Transform your ChatGPT experience with intelligent prompt engineering:
 <div align="center">
 
 **🎯 Design Philosophy**  
-*"Just make it work, no drama, no bloat. One toggle. One button. Actual intelligence."*
+*"Prompting shouldn't be hard. With Prompt Buddy, it isn't."*
 
 **✅ STATUS: PRODUCTION READY**
 

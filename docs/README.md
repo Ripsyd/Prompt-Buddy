@@ -12,11 +12,30 @@
 
 🎨⚡🛡️ **PRODUCTION READY**: Custom logos, military-grade encryption, bulletproof toggle control, and comprehensive security!
 
+---
+
+## Table of Contents
+- [✨ What It Does](#-what-it-does)
+- [🚀 Get Started](#-get-started)
+- [⚙️ Quick Setup](#️-quick-setup)
+- [🎯 How It Works](#-how-it-works)
+- [🔐 API Key Security](#-api-key-security)
+- [Features](#features)
+- [Technical Achievements](#technical-achievements)
+- [API Integration](#api-integration)
+- [Security Assessment - LAUNCH SAFE ✅](#security-assessment---launch-safe-)
+- [Troubleshooting](#troubleshooting)
+- [Version History](#version-history)
+- [📄 Privacy & Legal](#-privacy--legal)
+- [🤝 Contributing](#-contributing)
+- [📞 Support](#-support)
+- [⚠️ Disclaimer](#-disclaimer)
+
 ## ✨ What It Does
 
 Transform your ChatGPT experience with intelligent prompt engineering:
 
-**🧠 AI-Powered Optimization**: Automatically improves your prompts using GPT-4o-mini
+**🧠 AI-Powered Optimization**: Automatically improves your prompts using GPT-4o in a lean, low-token mode for faster response times
 - **[OPTIMIZED]** - Enhances vague prompts with technical precision
 - **[DEBUG]** - Provides step-by-step debugging guides for issues  
 - **[ANALYSIS]** - Delivers engineering-level analysis for complex requests
@@ -33,9 +52,9 @@ Transform your ChatGPT experience with intelligent prompt engineering:
 ## 🚀 Get Started
 
 ### **Option 1: Chrome Web Store (Recommended)**
-[![Add to Chrome](https://img.shields.io/badge/Add%20to-Chrome-blue.svg?style=for-the-badge&logo=google-chrome)](https://chrome.google.com/webstore/detail/prompt-buddy/STORE_ID_HERE)
+[![Add to Chrome](https://img.shields.io/badge/Add%20to-Chrome-blue.svg?style=for-the-badge&logo=google-chrome)](https://chrome.google.com/webstore)
 
-*Coming Soon - Currently in review*
+*🚀 Coming Soon - Currently in Chrome Web Store review process*
 
 ### **Option 2: 🛠 Install Locally (Developer)**
 
@@ -86,7 +105,7 @@ All API communications are direct to OpenAI - no data passes through our servers
 
 ### **⚡ Performance & Intelligence**
 - **Lightning Speed**: 2-3 second response times with intelligent caching (5min TTL)
-- **AI-Powered**: GPT-4o-mini for fast, cost-effective prompt engineering
+- **AI-Powered**: GPT-4o in optimized mode for fast, cost-effective prompt engineering
 - **Smart Caching**: Instant results for repeated prompts (0ms response!)
 - **Performance Metrics**: Real-time response time feedback
 - **Cache Management**: Automatic cleanup on window close/disable
@@ -108,7 +127,7 @@ All API communications are direct to OpenAI - no data passes through our servers
 - **Professional Polish**: Named functions, clean stack traces, zero debug logs
 
 ### **🔧 Technical Excellence**
-- **Manifest V3**: Modern Chrome extension architecture
+- **[Manifest V3](https://developer.chrome.com/docs/extensions/mv3/intro/)**: Modern Chrome extension architecture
 - **Enterprise-Grade**: Secure API handling with timeout protection
 - **Production Ready**: Clean codebase optimized for public deployment
 - **Persistent Settings**: Encrypted configuration sync across Chrome instances
@@ -126,9 +145,11 @@ All API communications are direct to OpenAI - no data passes through our servers
 
 ## API Integration
 
-The extension uses OpenAI's GPT-4o with this system prompt:
+The extension uses OpenAI's GPT-4o in an optimized configuration with this system prompt:
 
 > "You are Prompt Buddy, an expert prompt engineer, code debugger, and analyst. When a user sends a prompt, intelligently determine if it is a bug report, a feature request, or a prompt to optimize. Reply with an improved, more technical version of the prompt if optimization is needed, a step-by-step debugging guide if a bug, or an engineering-level analysis if a feature. Start each response with one of: [OPTIMIZED], [DEBUG], or [ANALYSIS]."
+
+*Note: We use GPT-4o in a lean, low-token mode for faster response times - internally optimized for speed and cost-efficiency.*
 
 ## Security Assessment - LAUNCH SAFE ✅
 
@@ -171,7 +192,8 @@ The extension uses OpenAI's GPT-4o with this system prompt:
 - Check you have sufficient API credits
 - Ensure endpoint URL is correct
 
-## Version History
+<details>
+<summary>📜 Version History</summary>
 
 **v1.0.1 - PRODUCTION SECURITY LAUNCH** 🛡️🎨⚡
 - **🛡️ SECURITY**: Military-grade AES-256-GCM encryption with PBKDF2 key derivation
@@ -186,6 +208,8 @@ The extension uses OpenAI's GPT-4o with this system prompt:
 - **📊 MONITORING**: Real-time performance metrics and comprehensive logging
 - **🎨 UI/UX**: Modern glassmorphism design with responsive breakpoints
 - **🔧 ARCHITECTURE**: Manifest V3, service workers, enterprise-grade security
+
+</details>
 
 ## 📄 Privacy & Legal
 
@@ -229,11 +253,11 @@ This extension enhances your ChatGPT experience but should be used responsibly. 
 <div align="center">
 
 **🎯 Design Philosophy Fulfilled**  
-*"Just make it work, no drama, no bloat. One toggle. One button. Actual intelligence."*
+*"Prompting shouldn't be hard. With Prompt Buddy, it isn't."*
 
 **✅ STATUS: PRODUCTION READY**
 
-*Built for builders who want results, not complexity.*
+*Built for people who ship. Not for people who tinker.*
 
 [![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/Ripsyd/PromptBuddy-Extension)
 [![Built for ChatGPT](https://img.shields.io/badge/Built%20for-ChatGPT-green.svg)](https://chat.openai.com)
